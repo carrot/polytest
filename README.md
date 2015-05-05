@@ -21,13 +21,29 @@ This library takes care of the "test multiple version of dependencies" issue wit
 The purpose of this script is to be able to run a specific test suite with a specific set of dependencies, independent of your `package.json` file. As such, `polytest` takes two arguments. The first is the command you use to run the test suite, and the second is a JSON object representing a `package.json` file, or a string that represents a path where one can be loaded. For example:
 
 ```js
-var polytest = require('polytest');
+var Polytest = require('polytest');
 
-polytest('mocha test/old/all.js', 'test/old/package.json')
-  .pipe(process.stdout)
+var polytest = new Polytest({
+  cmd: 'mocha test/old/all.js',
+  pkg: 'test/old/package.json'
+});
+
+polytest.run().pipe(process.stdout);
 ```
 
-A couple things happening here. First of all, you can see the two arguments as described above -- command to run the tests and path to a `package.json` file with which to run the tests. Second, you'll notice these are relative paths. These will be executed relative to the file in which polytest is being run. If this is confusing or tripping you up, feel free to simply pass an absolute path. Finally, you'll notice that it returns a stream. The stream will simply pass through the command's output and you can do whatever you'd like with it, in the above example it's just logged through the console.
+A couple things happening here. First of all, you can see the two arguments as described above -- command to run the tests and path to a `package.json` file with which to run the tests. These arguments are accepted through an object. The `cmd` option takes a string, which is a command to be run via command line. The `pkg` argument takes either a string, which is a path to a `package.json` file, or an object, which is the contents of a `package.json` file.
+
+Second, you'll notice these are relative paths. These will be executed relative to the `cwd` from which polytest is executed. If this is confusing or tripping you up, feel free to simply pass an absolute path. Finally, you'll notice that it returns a stream. The stream will simply pass through the command's output and you can do whatever you'd like with it, in the above example it's just logged through the console.
+
+You also will need to patch your test scripts so that polytest can work correctly. Fortunately, it's a small and easy patch, just a single line. The line will do nothing if the file is not run through polytest, so test will still execute normally when run outside polytest as well. Just add the line below as the first line of the file, as such:
+
+```js
+require = polytest.require();
+
+// rest of your test file
+```
+
+Note that you will need to use the already initialized polytest object, or re-initialize it here. You can arrange this in a couple ways. Usually, it means one file that initializes polytest with options and exports the initialized object, then this object is required into the tests for patching, and into a separate script file or command for running the alternate version tests. But you can do it however you want, really!
 
 ### License & Contributing
 

@@ -1,4 +1,7 @@
+poly = require './support/poly'
+
 describe 'basic', ->
 
-  it 'should work', ->
-    polytest.should.eql 'wow'
+  it 'should work', (done) ->
+    poly.install ->
+      poly.run(done)
