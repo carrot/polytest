@@ -1,12 +1,12 @@
 {
   "name": "polytest",
   "version": "0.0.0",
-  "author": "Carrot Creative <dev@carrotcreative.com>",
+  "author": "Jeff Escalante <jeff@carrotcreative.com>",
   "description": "test multiple versions of node dependencies",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jenius/polytest.git"
+    "url": "https://github.com/carrot/polytest.git"
   },
   "main": "lib",
   "devDependencies": {
