@@ -21,7 +21,7 @@ This library takes care of the "test multiple version of dependencies" issue wit
 The purpose of this script is to be able to run a specific test suite with a specific set of dependencies, independent of your `package.json` file. As such, `polytest` takes two arguments. The first is the command you use to run the test suite, and the second is a JSON object representing a `package.json` file, or a string that represents a path where one can be loaded. For example:
 
 ```js
-polytest = require('polytest');
+var polytest = require('polytest');
 
 polytest('mocha test/old/all.js', 'test/old/package.json')
   .pipe(process.stdout)
