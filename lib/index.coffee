@@ -3,7 +3,9 @@ path          = require 'path'
 child_process = require 'child_process'
 Module        = require 'module'
 npm           = require 'npm'
-uuid          = require 'uuid'
+uuid          = require 'node-uuid'
+nodefn        = require 'when/node'
+crypto        = require 'crypto'
 
 class Polytest
 
@@ -14,6 +16,8 @@ class Polytest
     else
       JSON.parse(fs.readFileSync(opts.pkg))
 
+    @install_path = path.resolve("polytest_#{hash_pkg(@pkg)}")
+
   require: (name) ->
     if not process.env.POLYTEST then return require;
 
@@ -21,29 +25,25 @@ class Polytest
     _this = this
 
     return Module.prototype.require = (name) ->
-      console.log fs.existsSync(path.join(_this.pkg, name))
-      _require.call(this, name)
+      hypothetical_path = path.join(_this.install_path, 'node_modules', name)
+      res = if fs.existsSync(hypothetical_path) then hypothetical_path else name
+      console.log hypothetical_path
+      _require.call(this, res)
 
-  install: (cb) ->
-    fs.renameSync('node_modules', 'temp_node_modules')
+  install: ->
+    fs.mkdirSync(@install_path)
+    fs.writeFileSync(path.join(@install_path, 'package.json'), JSON.stringify(@pkg))
 
-    npm.load @pkg, (err) ->
-      if err then return cb(err)
-
-      npm.commands.install [], (err, data) ->
-        if err then return cb(err)
-
-        console.log data
-
-        fs.renameSync('node_modules', "polytest_modules_#{uuid.v1()}")
-        fs.renameSync('temp_node_modules', 'node_modules')
-
-        cb()
+    nodefn.call(npm.load.bind(npm), @pkg)
+    .then =>
+      nodefn.call(npm.commands.install, @install_path, [])
+    .then =>
+      fs.unlinkSync(path.join(@install_path, 'package.json'))
 
   run: (cb) ->
-    child_process.exec @cmd, { env: { POLYTEST: true } }, (err, stdout, stderr) ->
-      if err then return console.error(err)
-      console.log stdout
-      cb()
+    child_process.exec @cmd, { env: { POLYTEST: true } }
+
+  hash_pkg = (pkg) ->
+    crypto.createHash('sha1').update(JSON.stringify(pkg)).digest('hex')
 
 module.exports = Polytest

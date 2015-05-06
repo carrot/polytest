@@ -1,7 +1,7 @@
 require('coffee-script/register')
-var Polytest = require('../..');
 
-module.exports = new Polytest({
+var Polytest = require('../..');
+poly = new Polytest({
   cmd: 'node test/fixtures/basic.js',
   pkg: {
     "name": "test",
@@ -11,7 +11,9 @@ module.exports = new Polytest({
       "url": "foobar"
     },
     "dependencies": {
-      "indx": "2.x"
+      "indx": "0.2.x"
     }
   }
 });
+
+module.exports = poly;
