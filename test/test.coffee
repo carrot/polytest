@@ -7,4 +7,4 @@ describe 'basic', ->
     poly.install().then ->
       p = poly.run()
       p.stdout.pipe(process.stdout)
-      p.on 'close', -> rimraf(poly.install_path, done)
+      p.on 'close', -> rimraf(poly.mod_path, done)
