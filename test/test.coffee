@@ -30,7 +30,9 @@ describe 'basic', ->
   it 'works when run a second time to reinstall', (done) ->
     poly.install().then(-> done())
 
-  # it 'should not mess up normally run tests'
+  # unfortunately at the moment it actually does mess up normal test
+  # also the module resolution algorithm is incorrect
+  it 'should not mess up normally run tests'
 
   after (done) -> poly.remove_modules(done)
 
