@@ -1,1 +1,1 @@
-var sec = require('./secondary.js');
+module.exports = require('./secondary.js');

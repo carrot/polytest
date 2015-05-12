@@ -10,12 +10,13 @@
   },
   "main": "lib",
   "devDependencies": {
-    "mocha": "2.x",
     "chai": "2.x",
+    "chai-fs": "git://github.com/jenius/chai-fs",
+    "coffee-script": "1.9.x",
     "coffeelint": "1.x",
     "istanbul": "0.3.x",
-    "mocha-lcov-reporter": "0.0.2",
-    "coffee-script": "1.9.x"
+    "mocha": "2.x",
+    "mocha-lcov-reporter": "0.0.2"
   },
   "scripts": {
     "test": "npm run lint && mocha",
