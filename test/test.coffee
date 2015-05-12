@@ -7,7 +7,7 @@ describe 'basic', ->
       poly.path.should.be.a.directory()
       done()
 
-  it 'works with a done argument', (done) ->
+  it 'should use polytest dependencies when running through polytest', (done) ->
     p = poly.run()
     i = 0
 
