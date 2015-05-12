@@ -45,6 +45,8 @@ require = polytest.require();
 
 Note that you will need to use the already initialized polytest object, or re-initialize it here. You can arrange this in a couple ways. Usually, it means one file that initializes polytest with options and exports the initialized object, then this object is required into the tests for patching, and into a separate script file or command for running the tests. But you can arrange it however you want!
 
+> **NOTE**: At the moment this library is still in early development, and the patch does actually mess things up when you are not using polytest. So at the moment, you are not able to run the same file with and without polytest and expect similar results. We are working on making this possible soon though!
+
 You will notice that polytest generates a directory at the root of your project to store the node modules according to the `package.json` that you pass to it. On the initialized polytest instance, the absolute path to this directory can be accessed via `polytest.path`. If you'd like to get rid of this directory, you can remove it using `polytest.remove_modules(callback)`. If you'd like to keep it, tests will still run and `polytest.install()` will simply update the dependencies when run. However, I'd advice adding `polytest_*` to your `.gitignore` file to make sure these folders are not pushed to git, much like you do with `node_modules`.
 
 ### License & Contributing
