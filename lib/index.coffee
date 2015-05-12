@@ -3,7 +3,6 @@ path          = require 'path'
 child_process = require 'child_process'
 Module        = require 'module'
 npm           = require 'npm'
-uuid          = require 'node-uuid'
 nodefn        = require 'when/node'
 crypto        = require 'crypto'
 
