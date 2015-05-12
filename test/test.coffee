@@ -3,7 +3,7 @@ poly   = require './support/poly'
 describe 'basic', ->
 
   it 'should install deps to a separate folder', (done) ->
-    poly.install().then ->
+    poly.install ->
       poly.path.should.be.a.directory()
       done()
 
@@ -28,7 +28,7 @@ describe 'basic', ->
       done()
 
   it 'works when run a second time to reinstall', (done) ->
-    poly.install().then(-> done())
+    poly.install(-> done())
 
   # unfortunately at the moment it actually does mess up normal test
   # also the module resolution algorithm is incorrect

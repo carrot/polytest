@@ -3,7 +3,6 @@ path          = require 'path'
 child_process = require 'child_process'
 Module        = require 'module'
 npm           = require 'npm'
-nodefn        = require 'when/node'
 crypto        = require 'crypto'
 rimraf        = require 'rimraf'
 
@@ -18,7 +17,7 @@ class Polytest
 
     @path = path.resolve("polytest_#{hash_pkg(@pkg)}")
 
-  require: (name) ->
+  require: ->
     if not process.env.POLYTEST then return require
 
     _require = Module.prototype.require
@@ -29,13 +28,13 @@ class Polytest
       res = if fs.existsSync(hypothetical_path) then hypothetical_path else name
       _require.call(this, res)
 
-  install: ->
+  install: (cb) ->
     if not fs.existsSync(@path)
       fs.mkdirSync(@path)
       fs.writeFileSync(path.join(@path, 'package.json'), JSON.stringify(@pkg))
 
-    nodefn.call(npm.load.bind(npm), @pkg)
-      .then => nodefn.call(npm.commands.install, @path, [])
+    npm.load @pkg, =>
+      npm.commands.install(@path, [], cb)
 
   run: ->
     child_process.exec @cmd, { env: { POLYTEST: true } }

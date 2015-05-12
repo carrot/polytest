@@ -28,7 +28,6 @@
   },
   "dependencies": {
     "npm": "^2.9.0",
-    "rimraf": "^2.3.3",
-    "when": "^3.7.3"
+    "rimraf": "^2.3.3"
   }
 }
